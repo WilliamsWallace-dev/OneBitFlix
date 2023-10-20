@@ -1,18 +1,33 @@
-import { DataTypes } from "sequelize";
-import { Model, Optional} from "sequelize/types";
-import { database } from "../../config/sequelize";
+import { DataTypes, Model, Optional } from 'sequelize'
+import { database } from '../../config/sequelize'
 
-export interface Category { 
-    id : number,
-    name : string,
-    position : number
+export interface Category {
+  id: number
+  name: string
+  position: number
 }
 
-export interface CategoryCreationAttribute extends Optional<Category,"id">{}
+export interface CategoryCreationAttributes extends Optional<Category,'id'> {}
+// export interface CategoryCreationAttributes extends Optional<Category, 'id'> {}
 
-export interface CategoryIntance extends Model<CategoryCreationAttribute, Category>, Category {}
+export interface CategoryInstance extends Model<Category, CategoryCreationAttributes>, Category {}
+// export interface CategoryInstance extends Model<Category, CategoryCreationAttributes>, Category {}
 
-export const Category = database.define("categories",{
-    name : DataTypes.STRING,
-    position : DataTypes.NUMBER
-})
+export const Category = database.define<CategoryInstance, Category>('categories', {
+// export const Category = database.define<CategoryInstance, Category>('categories', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    name: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    position: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.INTEGER
+    }
+  })
